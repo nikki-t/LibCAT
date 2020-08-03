@@ -41,3 +41,6 @@ target/
 .project
 
 *.log
+
+# MacOS index files
+.DS_Store

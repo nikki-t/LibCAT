@@ -1,9 +1,15 @@
 package edu.bu.met.cs665;
 
-import edu.bu.met.cs665.example1.Person;
+import edu.bu.met.cs665.library.LibraryCatalog;
+import java.io.FileNotFoundException;
 import org.apache.log4j.Logger;
-// import org.apache.log4j.PropertyConfigurator;
 
+/**
+ * Class used to run the library catalog application.
+ * MET CS 665 Design Patterns - Class Project
+ * @author Nikki Tebaldi 
+ * @since 2020-07-31
+ */
 public class Main {
 
   private static Logger logger = Logger.getLogger(Main.class);
@@ -16,29 +22,14 @@ public class Main {
    */
   public static void main(String[] args) {
 
-    // This configuration is for setting up the log4j properties file.
-    // It is better to set this using java program arguments.
-    // PropertyConfigurator.configure("log4j.properties");
-
-    // Let us create an object of the Main class.
-    Main m = new Main();
-
-    logger.info(m.doIt());
-
-    logger.trace("Trace Message!");
-    logger.debug("Debug Message!");
-    logger.info("Info Message!");
-    logger.warn("Warn Message!");
-    logger.error("Error Message!");
-    logger.fatal("Fatal Message!");
+    LibraryCatalog lc = new LibraryCatalog();
+    try {
+      lc.setResourceList();
+      lc.displayCatalog();
+    } catch (FileNotFoundException e) {
+      logger.error("Could not generate catalog.");
+      logger.error(e);
+    }
 
   }
-
-
-
-  private String doIt() {
-    Person student = new Person("John", "Doe");
-    return student.getLastName() + ',' + student.getLastName();
-  }
-
 }
