@@ -59,7 +59,7 @@ The following is a list and brief description of design goals for this iteration
 
 ### Sufficiency
 
-The first iteration of LibCAT aims to function and fulfill the use case through the implementation of mulitple design patterns. The use of design patterns ensures the correctness of inter-package communication and behavior while fulfilling the primary requirements of resource creation and resource state behaviors.
+The first iteration of LibCAT aims to function and fulfill the use case through the implementation of multiple design patterns. The use of design patterns ensures the correctness of inter-package communication and behavior while fulfilling the primary requirements of resource creation and resource state behaviors.
 
 ### Modularity
 
@@ -112,6 +112,7 @@ Code duplication is reduced in the following ways:
 - There was some inconsistency in how different developers implemented the Builder Pattern when I completed my research on the pattern. I choose to have the concrete builder classes use the resource member attribute methods to "build" the resource and then return the resource with the getResult method. I also provided a reset method to reset the reference to the resource member attribute where some implementations of the getResult method jsut returned a new object. This however meant a heavily paramterized constructor which seemed to defeat the purpose and benefit of the Builder Pattern.
 - I placed references in the Director class to each builder and concrete builder type. Some implementations accepted a builder object reference as a parameter to their construction methods. I decided this made it cleaner in the LibraryCatalog class as it does not have to have any knowledge of the builders or concrete builders to use the director's construction methods. I did however allow one to set the different concrete builders using set methods in the Director class.
 - I decided to implement a getResult method for each concrete builder and have it return a "Resource". This seemed like a good practice at it is programming to an interface or abstraction. This would require casting at some point if one wanted to display the specifics of a Book or Movie object. This was the only place that I thought casting would be necessary and it did not seem to be too terrible of a decision so I decided to keep the functionality as is. Are there any other unintended consequences you canthink of?
+- I put newline characters in the logging to make it clear what was printing to the console which helped to demo the program. Ideally the newlines and logging with cleaned up to only log key points of functionality.
 
 # How to compile the project
 
