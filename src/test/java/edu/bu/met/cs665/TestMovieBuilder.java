@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 
 import edu.bu.met.cs665.builder.ConcreteMovieBuilder;
 import edu.bu.met.cs665.builder.MovieBuilder;
-import edu.bu.met.cs665.product.Electronic;
-import edu.bu.met.cs665.product.Movie;
-import edu.bu.met.cs665.product.Person;
-import edu.bu.met.cs665.product.Physical;
+import edu.bu.met.cs665.resource.Electronic;
+import edu.bu.met.cs665.resource.Movie;
+import edu.bu.met.cs665.resource.Person;
+import edu.bu.met.cs665.resource.Physical;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
@@ -150,7 +150,7 @@ public class TestMovieBuilder {
     // Reset and assert attributes
     movieBuilder.reset();
     Movie movie = (Movie) movieBuilder.getResult();
-    assertNull(movie.getCastList());
+    assertTrue(movie.getCastList().isEmpty());
     assertNull(movie.getCreator());
     assertNull(movie.getFormat());
     assertEquals(0, movie.getId());

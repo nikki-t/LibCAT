@@ -2,11 +2,10 @@ package edu.bu.met.cs665;
 
 import static org.junit.Assert.*;
 
-import edu.bu.met.cs665.builder.ConcreteBookBuilder;
-import edu.bu.met.cs665.builder.ConcreteMovieBuilder;
 import edu.bu.met.cs665.builder.Director;
-import edu.bu.met.cs665.product.Book;
-import edu.bu.met.cs665.product.Movie;
+import edu.bu.met.cs665.patron.Patron;
+import edu.bu.met.cs665.resource.Book;
+import edu.bu.met.cs665.resource.Movie;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -22,8 +21,6 @@ import org.junit.Test;
 * @since 2020-07-31
 */
 public class TestDirector {
-  
-  Director director = new Director();
   
   /**
    * Creates a record from the String parameter.
@@ -49,10 +46,10 @@ public class TestDirector {
    * @return List of List of String objects
    * @throws FileNotFoundException when csv file cannot be located
    */
-  private static List<List<String>> retrieveRecords() throws FileNotFoundException {
+  private static List<List<String>> retrieveRecords(String dbFile) throws FileNotFoundException {
     List<List<String>> records = new ArrayList<>();
     
-    try (Scanner scanner = new Scanner(new File("resources-test.csv"));) {
+    try (Scanner scanner = new Scanner(new File(dbFile));) {
       while (scanner.hasNextLine()) {
         records.add(getRecord(scanner.nextLine()));
       }
@@ -61,6 +58,8 @@ public class TestDirector {
     return records;
   }
   
+  Director director = new Director();
+  
   /**
    * Tests the construction of a book by the Director class.
    * @throws FileNotFoundException 
@@ -68,11 +67,12 @@ public class TestDirector {
   @Test
   public void testConstructBook() throws FileNotFoundException {
     // Get a record
-    List<List<String>> records = retrieveRecords();
+    String dbFile = "src/test/java/edu/bu/met/cs665/resources-test.csv";
+    List<List<String>> records = retrieveRecords(dbFile);
     List<String> record = records.get(0);
     
     // Construct book using director
-    Book book = (Book) director.constructBook(new ConcreteBookBuilder(), record);
+    Book book = (Book) director.constructBook(record);
     
     // Assert expected book attributes
     String expected = "\nID: 158904"
@@ -96,11 +96,12 @@ public class TestDirector {
   @Test
   public void testConstructMovie() throws FileNotFoundException {
     // Get a record
-    List<List<String>> records = retrieveRecords();
+    String dbFile = "src/test/java/edu/bu/met/cs665/resources-test.csv";
+    List<List<String>> records = retrieveRecords(dbFile);
     List<String> record = records.get(1);
     
     // Construct a movie using director
-    Movie movie = (Movie) director.constructMovie(new ConcreteMovieBuilder(), record);
+    Movie movie = (Movie) director.constructMovie(record);
     
     // Assert expected movie attributes
     String expected = "\nID: 158909"
@@ -115,6 +116,30 @@ public class TestDirector {
         + "\nCast List: Orson Welles; Joseph Cotton; Dorothy Comingore; "
         + "\nRating: PG";
     assertEquals(expected, movie.toString());    
+  }
+  
+  /**
+   * Tests the construction of a Patron by the Director class.
+   * @throws FileNotFoundException 
+   */
+  @Test
+  public void testConstructPatron() throws FileNotFoundException {
+    // Get a record
+    String dbFile = "src/test/java/edu/bu/met/cs665/patron-test.csv";
+    List<List<String>> records = retrieveRecords(dbFile);
+    List<String> record = records.get(0);
+    
+    // Construct a Patron using Director
+    Patron patron = director.constructPatron(record);
+    
+    // Assert expected attributes
+    String expected = "\nID: 1001"
+        + "\nName: Jordana Quant"
+        + "\nPhone: 316-844-1784"
+        + "\nEmail: jquant0@liveinternet.ru"
+        + "\nAddress: Street: 449 Northfield Hill, City: Wichita, "
+        + "State: KS, Zip: 67260";
+    assertEquals(expected, patron.toString());
   }
 
 }

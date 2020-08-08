@@ -1,4 +1,4 @@
-package edu.bu.met.cs665.product;
+package edu.bu.met.cs665.resource;
 
 /**
  * Represents a person.

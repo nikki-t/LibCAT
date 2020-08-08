@@ -1,5 +1,6 @@
-package edu.bu.met.cs665.product;
+package edu.bu.met.cs665.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
 public class Movie extends Resource {
   
   // Instance variables
-  private List<Person> castList;
+  private List<Person> castList = new ArrayList<>();
   private String rating;
   
   /**
@@ -44,8 +45,8 @@ public class Movie extends Resource {
   
   @Override
   public String toString() {
-    return super.toString() + String.format("\nCast List: %s"
-        + "\nRating: %s", createCastString(), rating);
+    return super.toString() + String.format("%nCast List: %s"
+        + "%nRating: %s", createCastString(), rating);
   }
 
 }

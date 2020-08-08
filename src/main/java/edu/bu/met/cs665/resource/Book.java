@@ -1,4 +1,4 @@
-package edu.bu.met.cs665.product;
+package edu.bu.met.cs665.resource;
 
 /**
  * Contains all attributes that make up a library resource that is a book.
@@ -30,8 +30,8 @@ public class Book extends Resource {
   
   @Override
   public String toString() {
-    return super.toString() + String.format("\nPublisher: %s"
-        + "\nCity: %s", publisher, city);
+    return super.toString() + String.format("%nPublisher: %s"
+        + "%nCity: %s", publisher, city);
     
   }
   

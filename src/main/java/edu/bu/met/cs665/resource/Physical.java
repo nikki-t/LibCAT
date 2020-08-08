@@ -1,4 +1,4 @@
-package edu.bu.met.cs665.product;
+package edu.bu.met.cs665.resource;
 
 /**
  * Represents a physical resource that exists inside of the library building.
@@ -42,9 +42,9 @@ public class Physical implements Format {
   
   @Override
   public String toString() {
-    return String.format("\nFormat: %s"
-        + "\nCall Number: %s"
-        + "\nSize: %s", format, location, size);
+    return String.format("%nFormat: %s"
+        + "%nCall Number: %s"
+        + "%nSize: %s", format, location, size);
   }
 
 }

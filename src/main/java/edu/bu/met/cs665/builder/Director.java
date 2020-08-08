@@ -1,9 +1,11 @@
 package edu.bu.met.cs665.builder;
 
-import edu.bu.met.cs665.product.Electronic;
-import edu.bu.met.cs665.product.Person;
-import edu.bu.met.cs665.product.Physical;
-import edu.bu.met.cs665.product.Resource;
+import edu.bu.met.cs665.patron.Address;
+import edu.bu.met.cs665.patron.Patron;
+import edu.bu.met.cs665.resource.Electronic;
+import edu.bu.met.cs665.resource.Person;
+import edu.bu.met.cs665.resource.Physical;
+import edu.bu.met.cs665.resource.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,68 +17,91 @@ import java.util.List;
  */
 public class Director {
   
+  // Class variables
+  private BookBuilder bookBuilder = new ConcreteBookBuilder();
+  private MovieBuilder movieBuilder = new ConcreteMovieBuilder();
+  private PatronBuilder patronBuilder = new ConcretePatronBuilder();
+  
   /**
    * Constructs and returns a Book in either electronic or physical form.
-   * @param builder BookBuilder object used to create a Book object
    * @param record List of String objects that represent a record
    * @return Resource
    */
-  public Resource constructBook(BookBuilder builder, List<String> record) {
+  public Resource constructBook(List<String> record) {
     
     // Build the Book
-    builder.setCity(record.get(8));
-    builder.setCreator(getPerson(record.get(1)));
+    bookBuilder.setCity(record.get(8));
+    bookBuilder.setCreator(getPerson(record.get(1)));
     // Format - test for electronic otherwise physical
     if (record.get(2).equals("electronic")) {
-      builder.setFormat(new Electronic(record.get(13), record.get(14), record.get(15)));
+      bookBuilder.setFormat(new Electronic(record.get(13), record.get(14), record.get(15)));
     } else {
-      builder.setFormat(new Physical(record.get(13), record.get(14), record.get(15)));
+      bookBuilder.setFormat(new Physical(record.get(13), record.get(14), record.get(15)));
     }
-    builder.setId(Integer.parseInt(record.get(0)));
-    builder.setLength(Double.parseDouble(record.get(3)));
-    builder.setPublisher(record.get(7));
-    builder.setTitle(record.get(4));
-    builder.setType(record.get(5));
-    builder.setYear(Integer.parseInt(record.get(6)));
+    bookBuilder.setId(Integer.parseInt(record.get(0)));
+    bookBuilder.setLength(Double.parseDouble(record.get(3)));
+    bookBuilder.setPublisher(record.get(7));
+    bookBuilder.setTitle(record.get(4));
+    bookBuilder.setType(record.get(5));
+    bookBuilder.setYear(Integer.parseInt(record.get(6)));
     
-    // Store product of builder construction
-    Resource resource = builder.getResult();
-    // Reset the builder's reference to the resource
-    builder.reset();
-    // Return the resource
+    // Store resource and reset the builder
+    Resource resource = bookBuilder.getResult();
+    bookBuilder.reset();
+
     return resource;
   }
   
   /**
    * Constructs and returns a Movie in electronic or physical form.
-   * @param builder MovieBuilder object used to create a Movie object
    * @param record List of String objects that represent a record
    * @return Resource
    */
-  public Resource constructMovie(MovieBuilder builder, List<String> record) {
+  public Resource constructMovie(List<String> record) {
     
     // Build the Movie
-    builder.setCast(createCastList(record.get(10), record.get(11), record.get(12)));
-    builder.setCreator(getPerson(record.get(1)));
+    movieBuilder.setCast(createCastList(record.get(10), record.get(11), record.get(12)));
+    movieBuilder.setCreator(getPerson(record.get(1)));
     // Format - test for electronic otherwise physical
     if (record.get(2).equals("electronic")) {
-      builder.setFormat(new Electronic(record.get(13), record.get(14), record.get(15)));
+      movieBuilder.setFormat(new Electronic(record.get(13), record.get(14), record.get(15)));
     } else {
-      builder.setFormat(new Physical(record.get(13), record.get(14), record.get(15)));
+      movieBuilder.setFormat(new Physical(record.get(13), record.get(14), record.get(15)));
     }
-    builder.setId(Integer.parseInt(record.get(0)));
-    builder.setLength(Double.parseDouble(record.get(3)));
-    builder.setRating(record.get(9));
-    builder.setTitle(record.get(4));
-    builder.setType(record.get(5));
-    builder.setYear(Integer.parseInt(record.get(6)));    
+    movieBuilder.setId(Integer.parseInt(record.get(0)));
+    movieBuilder.setLength(Double.parseDouble(record.get(3)));
+    movieBuilder.setRating(record.get(9));
+    movieBuilder.setTitle(record.get(4));
+    movieBuilder.setType(record.get(5));
+    movieBuilder.setYear(Integer.parseInt(record.get(6)));    
     
-    // Store product of builder construction
-    Resource resource = builder.getResult();
-    // Reset the builder's reference to the resource
-    builder.reset();
-    // Return the resource
+    // Store resource and reset the builder
+    Resource resource = movieBuilder.getResult();
+    movieBuilder.reset();
+    
     return resource;
+  }
+  
+  /**
+   * Constructs and returns a Patron.
+   * @param record List of String objects that represent a record
+   * @return Patron
+   */
+  public Patron constructPatron(List<String> record) {
+    
+    // Build the Patron
+    patronBuilder.setAddress(new Address(record.get(0), record.get(1), record.get(2), 
+        record.get(3)));
+    patronBuilder.setEmail(record.get(4));
+    patronBuilder.setId(Integer.parseInt(record.get(5)));
+    patronBuilder.setName(record.get(6));
+    patronBuilder.setPhone(record.get(7));
+    
+    // Store the Patron object and reset the builder
+    Patron patron = patronBuilder.getResult();
+    patronBuilder.reset();
+    
+    return patron;
   }
   
   /**
@@ -103,6 +128,18 @@ public class Director {
   private static Person getPerson(String fullName) {
     String[] splitName = fullName.split("\\s+");
     return new Person(splitName[0], splitName[1]);
+  }
+  
+  public void setBookBuilder(BookBuilder bb) {
+    this.bookBuilder = bb;
+  }
+  
+  public void setMovieBuilder(MovieBuilder mb) {
+    this.movieBuilder = mb;
+  }
+  
+  public void setPatronBuilder(PatronBuilder pb) {
+    this.patronBuilder = pb;
   }
   
 }

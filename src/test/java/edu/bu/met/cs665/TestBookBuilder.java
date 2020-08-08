@@ -4,14 +4,14 @@ import static org.junit.Assert.*;
 
 import edu.bu.met.cs665.builder.BookBuilder;
 import edu.bu.met.cs665.builder.ConcreteBookBuilder;
-import edu.bu.met.cs665.product.Book;
-import edu.bu.met.cs665.product.Electronic;
-import edu.bu.met.cs665.product.Physical;
+import edu.bu.met.cs665.resource.Book;
+import edu.bu.met.cs665.resource.Electronic;
+import edu.bu.met.cs665.resource.Physical;
 import org.junit.Test;
 
 /**
  * Tests the creation of Electronic and Physical Book objects by concrete 
- * BookBuilder sub-class objects..
+ * BookBuilder sub-class objects.
  * MET CS 665 Design Patterns - Class Project
  * @author Nikki Tebaldi 
  * @since 2020-07-31

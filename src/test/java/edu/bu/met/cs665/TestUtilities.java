@@ -1,6 +1,6 @@
 package edu.bu.met.cs665;
 
-import edu.bu.met.cs665.product.Person;
+import edu.bu.met.cs665.resource.Person;
 
 public class TestUtilities {
   

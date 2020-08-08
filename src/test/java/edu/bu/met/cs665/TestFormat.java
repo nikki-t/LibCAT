@@ -2,10 +2,10 @@ package edu.bu.met.cs665;
 
 import static org.junit.Assert.*;
 
-import edu.bu.met.cs665.product.Book;
-import edu.bu.met.cs665.product.Electronic;
-import edu.bu.met.cs665.product.Physical;
-import edu.bu.met.cs665.product.Resource;
+import edu.bu.met.cs665.resource.Book;
+import edu.bu.met.cs665.resource.Electronic;
+import edu.bu.met.cs665.resource.Physical;
+import edu.bu.met.cs665.resource.Resource;
 import org.junit.Before;
 import org.junit.Test;
 

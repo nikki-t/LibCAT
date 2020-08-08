@@ -1,4 +1,4 @@
-package edu.bu.met.cs665.product;
+package edu.bu.met.cs665.resource;
 
 /**
  * Represents an electronic resource that exists in on of the databases
@@ -43,9 +43,9 @@ public class Electronic implements Format {
   
   @Override
   public String toString() {
-    return String.format("\nFile Format: %s"
-        + "\nDatabase URL: %s"
-        + "\nFile Size: %s", format, location, size);
+    return String.format("%nFile Format: %s"
+        + "%nDatabase URL: %s"
+        + "%nFile Size: %s", format, location, size);
   }
 
 }

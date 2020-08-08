@@ -2,11 +2,13 @@ package edu.bu.met.cs665;
 
 import static org.junit.Assert.*;
 
-import edu.bu.met.cs665.product.Book;
-import edu.bu.met.cs665.product.Electronic;
-import edu.bu.met.cs665.product.Movie;
-import edu.bu.met.cs665.product.Person;
-import edu.bu.met.cs665.product.Physical;
+import edu.bu.met.cs665.patron.Address;
+import edu.bu.met.cs665.patron.Patron;
+import edu.bu.met.cs665.resource.Book;
+import edu.bu.met.cs665.resource.Electronic;
+import edu.bu.met.cs665.resource.Movie;
+import edu.bu.met.cs665.resource.Person;
+import edu.bu.met.cs665.resource.Physical;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -108,6 +110,48 @@ public class TestResource {
         + "\nCast List: Orson Welles; Joseph Cotton; Dorothy Comingore; "
         + "\nRating: PG";
     assertEquals(expected, movie.toString());
+  }
+  
+  /**
+   * Tests the resetHoldQueue method of the Resource class.
+   */
+  @Test
+  public void testResetHoldQueue() {
+    // Create a Patron
+    Patron patron = new Patron();
+    patron.setAddress(new Address("Wichita", "KS", "449 Northfield Hill", "67260"));
+    patron.setEmail("jquant0@liveinternet.ru");
+    patron.setId(1001);
+    patron.setName("Jordana Quant");
+    patron.setPhone("316-844-1784");
+    
+     // Create a Resource
+    Book book = new Book();
+    setBookAttributes(book);
+    
+    // Add a hold and then reset hold queue
+    book.addHold(patron);
+    book.resetHoldQueue();
+    
+    assertEquals(0, book.getHoldQueue().size());     
+  }
+  
+  /**
+   * Tests the resetState method of the Resource class.
+   */
+  @Test
+  public void testResetState() {
+    // Create a Resource
+    Book book = new Book();
+    setBookAttributes(book);
+    
+    // Set the state to checked out
+    book.setCurrentState(book.getCheckedOut());
+    assertEquals("Checked Out", book.getCurrentState().getName());
+    
+    // Reset state
+    book.resetState();
+    assertEquals("Available", book.getCurrentState().getName());
   }
 
 }

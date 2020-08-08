@@ -1,6 +1,6 @@
 package edu.bu.met.cs665.builder;
 
-import edu.bu.met.cs665.product.Person;
+import edu.bu.met.cs665.resource.Person;
 import java.util.List;
 
 /**

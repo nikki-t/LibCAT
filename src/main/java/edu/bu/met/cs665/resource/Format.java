@@ -1,4 +1,4 @@
-package edu.bu.met.cs665.product;
+package edu.bu.met.cs665.resource;
 
 /**
  * Specifies all operations required of a Format-type Resource.

@@ -1,8 +1,8 @@
 package edu.bu.met.cs665.builder;
 
-import edu.bu.met.cs665.product.Format;
-import edu.bu.met.cs665.product.Person;
-import edu.bu.met.cs665.product.Resource;
+import edu.bu.met.cs665.resource.Format;
+import edu.bu.met.cs665.resource.Person;
+import edu.bu.met.cs665.resource.Resource;
 
 /**
  * Specifies all operations required to build a Resource.
@@ -20,7 +20,7 @@ public interface ResourceBuilder {
   Resource getResult();
   
   /**
-   * Resets the member attribute reference of the Product that was built.
+   * Resets the member attribute reference of the Resource that was built.
    */
   void reset();
   

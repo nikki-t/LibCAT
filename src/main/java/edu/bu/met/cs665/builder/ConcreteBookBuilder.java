@@ -1,9 +1,9 @@
 package edu.bu.met.cs665.builder;
 
-import edu.bu.met.cs665.product.Book;
-import edu.bu.met.cs665.product.Format;
-import edu.bu.met.cs665.product.Person;
-import edu.bu.met.cs665.product.Resource;
+import edu.bu.met.cs665.resource.Book;
+import edu.bu.met.cs665.resource.Format;
+import edu.bu.met.cs665.resource.Person;
+import edu.bu.met.cs665.resource.Resource;
 
 /**
  * Builds a Book Resource.

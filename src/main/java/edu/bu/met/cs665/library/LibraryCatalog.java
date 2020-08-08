@@ -1,16 +1,13 @@
 package edu.bu.met.cs665.library;
 
-import edu.bu.met.cs665.builder.BookBuilder;
-import edu.bu.met.cs665.builder.ConcreteBookBuilder;
-import edu.bu.met.cs665.builder.ConcreteMovieBuilder;
 import edu.bu.met.cs665.builder.Director;
-import edu.bu.met.cs665.builder.MovieBuilder;
-import edu.bu.met.cs665.product.Resource;
-import java.io.File;
+import edu.bu.met.cs665.database.Database;
+import edu.bu.met.cs665.patron.Patron;
+import edu.bu.met.cs665.resource.Resource;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import org.apache.log4j.Logger;
 
 /**
  * Represents a library catalog that contains records on movies and books.
@@ -21,97 +18,128 @@ import java.util.Scanner;
  */
 public class LibraryCatalog {
   
+  // Class variable
+  private static Logger logger = Logger.getLogger(LibraryCatalog.class);
+  
   // Instance variables
-  BookBuilder bookBuilder;
+  List<Resource> catalog;
   Director director;
-  MovieBuilder movieBuilder;
-  List<Resource> resourceList;
+  List<Patron> patronList;
+  
   
   /**
    * Initializes all attributes of the Library catalog.
    */
   public LibraryCatalog() {
-    this.bookBuilder = new ConcreteBookBuilder();
+    this.catalog = new ArrayList<>();
     this.director = new Director();
-    this.movieBuilder = new ConcreteMovieBuilder();
-    this.resourceList = new ArrayList<>();
+    this.patronList = new ArrayList<>(); 
   }
   
   /**
-   * Creates and sets a List of Resource objects for the resourceList attribute
-   * via the Director object which uses a ResourceBuilder object and a List
-   * of String objects. 
-   * @param records List of String objects
+   * Creates and sets a List of Patron objects for the patronList attribute
+   * using the director and a record. 
+   * @param records List of a List of String objects
+   */
+  private void createPatronList(List<List<String>> records) {
+    for (List<String> record : records) {
+      patronList.add(director.constructPatron(record));
+    }
+  }
+  
+  /**
+   * Creates and sets a List of Resource objects for the catalog attribute
+   * using the director and a record. 
+   * @param records List of a List of String objects
    */
   private void createResourceList(List<List<String>> records) {
     for (List<String> record : records) {
       
       if (record.get(5).equals("book")) {
-        resourceList.add(director.constructBook(bookBuilder, record));
+        catalog.add(director.constructBook(record));
       // Record is for a movie
       } else {
-        resourceList.add(director.constructMovie(movieBuilder, record));
+        catalog.add(director.constructMovie(record));
       }
     }
   }
   
   /**
-   * Display all the titles of resources present in the library catalog.
+   * Display (logs) all the titles of resources present in the library catalog.
    */
   public void displayCatalog() {
-    for (Resource resource : resourceList) {
-      System.out.println(resource);
+    for (Resource resource : catalog) {
+      logger.info(resource);
     }
   }
   
-  public List<Resource> getResourceList() {
-    return resourceList;
+  /**
+   * Display (logs) all the titles of resources present in the library catalog.
+   */
+  public void displayPatrons() {
+    for (Patron patron : patronList) {
+      logger.info(patron);
+    }
   }
   
   /**
-   * Sets the resourceList which is a list of resources that belong to the 
-   * library.
+   * Searches for patron in the catalog list by integer ID parameter. Returns
+   * null if the patron cannot be found.
+   * @param id int id of resource to find
+   * @return Resource or null
+   */
+  public Patron findPatron(int id) {
+    for (Patron patron : patronList) {
+      if (patron.getId() == id) {
+        return patron;
+      }
+    }
+    return null;
+  }
+  
+  /**
+   * Searches for resource in the catalog list by integer ID parameter. Returns
+   * null if the resource cannot be found.
+   * @param id int id of resource to find
+   * @return Resource or null
+   */
+  public Resource findResource(int id) {
+    for (Resource resource : catalog) {
+      if (resource.getId() == id) {
+        return resource;
+      }
+    }
+    return null;
+  }
+  
+  public List<Patron> getPatronList() {
+    return patronList;
+  }
+  
+  public List<Resource> getResourceList() {
+    return catalog;
+  }
+  
+  /**
+   * Populates the catalog attribute which is a list of resources that belong to
+   * the library.
    * @throws FileNotFoundException when csv file cannot be located
    */
-  public void setResourceList() throws FileNotFoundException {
-    List<List<String>> records = retrieveData();
+  public void populateCatalog() throws FileNotFoundException {
+    String dbFile = "src/main/java/edu/bu/met/cs665/database/resources.csv";
+    List<List<String>> records = Database.retrieveRecords(dbFile);
     createResourceList(records);
   }
   
   /**
-   * Creates a record from the String parameter.
-   * @param row String row from the database
-   * @return List of String objects.
-   */
-  private static List<String> getRecord(String row) {
-    List<String> record = new ArrayList<>();
-    
-    try (Scanner rowScanner = new Scanner(row)) {
-      rowScanner.useDelimiter(",");
-      while (rowScanner.hasNext()) {
-        record.add(rowScanner.next());
-      }
-    }
-    
-    return record;
-  }
-  
-  /**
-   * Create a List of records from 'resources.csv' file to simulate the 
-   * retrieval of data from a database.
-   * @return List of List of String objects
+   * Populates the patronList with a list of patrons that belong to the library 
+   * by retrieving a list of patrons from the database.
    * @throws FileNotFoundException when csv file cannot be located
    */
-  private static List<List<String>> retrieveData() throws FileNotFoundException {
-    List<List<String>> records = new ArrayList<>();
-    
-    try (Scanner scanner = new Scanner(new File("resources.csv"));) {
-      while (scanner.hasNextLine()) {
-        records.add(getRecord(scanner.nextLine()));
-      }
-    }
-    
-    return records;
+  public void retrievePatrons() throws FileNotFoundException {
+    String dbFile = "src/main/java/edu/bu/met/cs665/database/patron.csv";
+    List<List<String>> records = Database.retrieveRecords(dbFile);
+    createPatronList(records);
   }
   
 }
